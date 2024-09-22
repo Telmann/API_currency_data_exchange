@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+    db:
+        image: postgres:15
+        container_name: db_app
+        command: -p 5435
+        expose:
+            - 5435
+        env_file:
+            - /app/core/.env
+    app:
+        build:
+            context: .
+        env_file:
+            - /app/core/.env
+        container_name: app
+        restart: on-failure
+        environment:
+            - APP_MODE=prod
+        ports:
+            - 9999:80
+        depends_on:
+            - db
